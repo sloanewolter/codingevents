@@ -1,11 +1,14 @@
 package org.launchcode.codingevents.models;
 
 import jakarta.validation.constraints.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import java.util.Date;
 import java.util.Objects;
+@Entity
+public class Event extends AbstractEntity {
 
-public class Event {
     @NotBlank
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
@@ -30,11 +33,11 @@ public class Event {
     @Future(message="The event must take place in the future.")
     private Date date;
 
-    private int id;
-    private static int nextId = 1;
+    private EventType type;
 
-    public Event() {}
-    public Event(String name, String description, String contactEmail, String location, boolean mustRegister, int numberOfAttendees,Date date) {
+
+
+    public Event(String name, String description, String contactEmail, String location, boolean mustRegister, int numberOfAttendees,Date date, EventType type) {
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
@@ -42,8 +45,18 @@ public class Event {
         this.mustRegister = mustRegister;
         this.numberOfAttendees = numberOfAttendees;
         this.date= date;
-        this.id=nextId;
-        nextId++;
+        this.type = type;
+
+    }
+    public Event() {
+        }
+
+    public EventType getType() {
+        return type;
+    }
+
+    public void setType(EventType type) {
+        this.type = type;
     }
 
     public boolean isMustRegister() {
@@ -86,10 +99,6 @@ public class Event {
         this.contactEmail = contactEmail;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
     }
@@ -111,16 +120,5 @@ public class Event {
         return name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Event event = (Event) o;
-        return id == event.id;
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
